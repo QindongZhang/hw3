@@ -1,0 +1,188 @@
+%one
+A=cell(14,2);  
+mz={'citywall.bmp','citywall1.bmp','citywall2.bmp','elain.bmp','elain1.bmp','elain2.bmp','elain3.bmp','lena.bmp','lena1.bmp','lena2.bmp','lena4.bmp','woman.bmp','woman1.bmp','woman2.bmp'};  
+pic=cell(14,1);  
+
+ for i=1:14  
+    [A{i,1},A{i,2}]=imread(mz{i});  
+     A{i,2}(end:256,:)=0;  
+     pic{i,1}=ind2gray(A{i,1},A{i,2});  
+     figure(i)  
+     imhist(pic{i,1})    
+ end
+
+
+%two
+A=cell(14,2);  
+mz={'citywall.bmp','citywall1.bmp','citywall2.bmp','elain.bmp','elain1.bmp','elain2.bmp','elain3.bmp','lena.bmp','lena1.bmp','lena2.bmp','lena4.bmp','woman.bmp','woman1.bmp','woman2.bmp'};  
+pic=cell(14,1);  
+
+ for i=1:14  
+    [A{i,1},A{i,2}]=imread(mz{i});  
+     A{i,2}(end:256,:)=0;  
+     pic{i,1}=ind2gray(A{i,1},A{i,2});    
+    figure(i)  
+    subplot(2,2,1)  
+    imshow(pic{i,1})  
+    title('原图')  
+    subplot(2,2,2)   
+    imhist(pic{i,1})    
+    title('原图直方图')  
+    subplot(2,2,3)  
+    histeq(pic{i,1},256)  
+    title('均衡后图像')  
+    subplot(2,2,4)  
+    imhist(histeq(pic{i,1},256))  
+    title('均衡后图像直方图')  
+ end
+
+
+%three
+A=cell(14,2);  
+mz={'citywall.bmp','citywall1.bmp','citywall2.bmp','elain.bmp','elain1.bmp','elain2.bmp','elain3.bmp','lena.bmp','lena1.bmp','lena2.bmp','lena4.bmp','woman.bmp','woman1.bmp','woman2.bmp'};  
+pic=cell(14,1);  
+zhifangtu=cell(14,1);  
+
+ for i=1:14  
+    [A{i,1},A{i,2}]=imread(mz{i});  
+     A{i,2}(end:256,:)=0;  
+     pic{i,1}=ind2gray(A{i,1},A{i,2});  
+     zhifangtu{i,1}=imhist(pic{i,1});  
+     if i==2||i==3  
+         figure(i)  
+         subplot(2,2,1)  
+         imshow(pic{i,1})  
+         title('原图')  
+         subplot(2,2,2)  
+         imhist(pic{i,1})  
+         title('原图直方图')  
+         subplot(2,2,3)  
+         histeq(pic{i,1},zhifangtu{1,1})  
+         title('匹配后图像')  
+         subplot(2,2,4)  
+         imhist(histeq(pic{i,1},zhifangtu{1,1}))  
+         title('匹配后图像直方图')  
+     end  
+     if i==5||i==6||i==7  
+         figure(i)  
+         subplot(2,2,1)  
+         imshow(pic{i,1})  
+         title('原图')  
+         subplot(2,2,2)  
+         imhist(pic{i,1})  
+         title('原图直方图')  
+         subplot(2,2,3)  
+         histeq(pic{i,1},zhifangtu{4,1})  
+         title('匹配后图像')  
+         subplot(2,2,4)  
+         imhist(histeq(pic{i,1},zhifangtu{4,1}))  
+         title('匹配后图像直方图')  
+     end  
+     if i==9||i==10||i==11  
+         figure(i)  
+         subplot(2,2,1)  
+         imshow(pic{i,1})  
+         title('原图')  
+         subplot(2,2,2)  
+         imhist(pic{i,1})  
+         title('原图直方图')  
+         subplot(2,2,3)  
+         histeq(pic{i,1},zhifangtu{8,1})  
+         title('匹配后图像')  
+         subplot(2,2,4)  
+         imhist(histeq(pic{i,1},zhifangtu{8,1}))  
+         title('匹配后图像直方图')  
+     end    
+     if i==13||i==14  
+         figure(i)  
+         subplot(2,2,1)  
+         imshow(pic{i,1})  
+         title('原图')  
+         subplot(2,2,2)  
+         imhist(pic{i,1})  
+         title('原图直方图')  
+         subplot(2,2,3)  
+         histeq(pic{i,1},zhifangtu{12,1})  
+         title('匹配后图像')  
+         subplot(2,2,4)  
+         imhist(histeq(pic{i,1},zhifangtu{12,1}))  
+         title('匹配后图像直方图')  
+     end  
+ end
+
+
+%four
+[pic1,map1]=imread('elain.bmp');  
+pic11=ind2gray(pic1,map1);  
+[pic2,map2]=imread('lena.bmp');  
+pic21=ind2gray(pic2,map2);  
+
+x=round(mean(mean(pic11)));  
+y=round(mean(mean(pic21)));  
+ 
+pic12=uint8(ones(518,518));  
+pic12=pic12*x;  
+pic13=uint8(zeros(512,512));  
+
+for i=1:512  
+    for j=1:512  
+        pic12(i+3,j+3)=pic11(i,j);  
+    end  
+end  
+
+for i=4:515  
+    for j=4:515  
+        a(1:7,1:7)=pic12(i-3:i+3,j-3:j+3);  
+        c=histeq(a,256);  
+        pic13(i-3,j-3)=c(4,4);  
+    end  
+end  
+
+imshow(pic13)  
+
+
+pic22=uint8(ones(518,518));  
+pic22=pic22*y;  
+pic23=uint8(zeros(512,512));  
+
+for i=1:512  
+    for j=1:512  
+        pic22(i+3,j+3)=pic21(i,j);  
+    end  
+end  
+
+for i=4:515  
+    for j=4:515  
+        a(1:7,1:7)=pic22(i-3:i+3,j-3:j+3);  
+        c=histeq(a,256);  
+        pic23(i-3,j-3)=c(4,4);  
+    end  
+end  
+
+imshow(pic23)  
+
+
+%five
+[pic1,map1]=imread('elain.bmp');  
+pic11=ind2gray(pic1,map1);  
+[pic2,map2]=imread('woman.bmp');  
+pic21=ind2gray(pic2,map2);  
+
+pic12= imbinarize(pic11);  
+pic22= imbinarize(pic21);  
+
+figure(1)  
+subplot(1,2,1)  
+imshow(pic11)  
+title('原图')  
+subplot(1,2,2)  
+imshow(pic12)  
+title('分割后图像')  
+
+figure(2)  
+subplot(1,2,1)  
+imshow(pic21)  
+title('原图')  
+subplot(1,2,2)  
+imshow(pic22)  
+title('分割后图像')
